@@ -1,0 +1,83 @@
+create database etic
+use etic
+create table users(
+id int identity(1,1) not null primary key,
+username nvarchar(50) not null,
+surname  nvarchar(50) not null,
+email nvarchar(100),
+gender nvarchar(5),
+birthdate nvarchar(50),
+telno int,
+);
+
+create table adres(
+id int identity(1,1) not null primary key,
+userid int not null foreign key (userid) references users(id),
+countryid int not null foreign key (countryid) references countries(id),
+cityid int not null foreign key (cityid) references cities(id),
+townid int not null foreign key (townid) references towns(id),
+districtid int not null foreign key (districtid) references districts(id),
+postacode nvarchar(20),
+addresstxt nvarchar(150),
+);
+
+create table countries(
+id int identity(1,1)not null primary key,
+country nvarchar(50)not null,
+);
+
+create table cities(
+id int identity(1,1)not null primary key,
+countryid int not null foreign key (countryid) references countries(id),
+city nvarchar(50) not null,
+);
+create table towns(
+id int identity(1,1) not null primary key,
+cityid int not null foreign key (cityid) references cities(id),
+town nvarchar(100) not null,
+);
+create table districts(
+id int primary key,
+district nvarchar(100) not null,
+townid int not null foreign key (townid) references towns(id)
+);
+create table items(
+id int primary key,
+itemcode nvarchar(100)not null,
+itemname nvarchar(100) not null,
+unitprice nvarchar(100),
+category1 nvarchar(100),
+category2 nvarchar(100),
+category3 nvarchar(100),
+category4 nvarchar(100),
+brand nvarchar(100),
+);
+create table orders(
+id int primary key,
+totalprice nvarchar(50),
+status nvarchar(50),
+userid int not null foreign key (userid) references users(id),
+adresid int not null foreign key (adresid) references adres(id)
+);
+create table orderdetaıls(
+id int primary key,
+amount int not null,
+unitprice nvarchar(50),
+totalprice nvarchar(50),
+orderid int not null foreign key (orderid) references orders(id),
+itemid int foreign key (itemid) references items(id),
+);
+create table payments(
+id int primary key,
+paymenttype nvarchar(50),
+approvecode nvarchar(50),
+paymenttotal nvarchar(50),
+orderid int foreign key (orderid) references orders(id)
+);
+create table ınvoices(
+id int primary key,
+cargoficheno nvarchar(100),
+totalprice nvarchar(50),
+orderid int foreign key (orderid) references orders(id),
+adresid int not null foreign key (adresid) references adres(id),
+);
